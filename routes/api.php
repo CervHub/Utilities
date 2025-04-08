@@ -11,16 +11,16 @@ Route::get('/user', function (Request $request) {
 
 // Rutas para las APIs de procesamiento de audio y texto
 // Recibe un audio y retorna otro audio
-Route::post('text-to-speech/audio-to-audio', [TextToSpeechApi::class, 'audioToAudio'])->name('texttospeech.audioToAudio');
+Route::get('text-to-speech/audio-to-audio', [TextToSpeechApi::class, 'audioToAudio'])->name('texttospeech.audioToAudio');
 
 // Recibe un audio y retorna un texto
-Route::post('text-to-speech/audio-to-text', [TextToSpeechApi::class, 'audioToText'])->name('texttospeech.audioToText');
+Route::get('text-to-speech/audio-to-text', [TextToSpeechApi::class, 'audioToText'])->name('texttospeech.audioToText');
 
 // Ingresa un texto y retorna un audio
-Route::post('text-to-speech/text-to-audio', [TextToSpeechApi::class, 'textToAudio'])->name('texttospeech.textToAudio');
+Route::get('text-to-speech/text-to-audio', [TextToSpeechApi::class, 'textToAudio'])->name('texttospeech.textToAudio');
 
 // Ingresa un texto y retorna un texto
-Route::post('chat/text-to-text', [ChatController::class, 'textToText'])->name('chat.textToText');
+Route::get('chat/text-to-text', [ChatController::class, 'textToText'])->name('chat.textToText');
 
 
 // Ruta de prueba que responde con un mensaje de bienvenida
