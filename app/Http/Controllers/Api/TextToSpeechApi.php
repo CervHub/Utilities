@@ -69,10 +69,6 @@ class TextToSpeechApi extends Controller
 
     public function textToAudio(Request $request)
     {
-        // Validar que el texto sea proporcionado
-        $validated = $request->validate([
-            'text' => 'required|string|max:5000', // Máximo 5000 caracteres
-        ]);
 
         // Obtener el texto
         $text = $request->input('text');
