@@ -17,10 +17,7 @@ class TextToSpeechApi extends Controller
 
     public function audioToAudio(Request $request)
     {
-        // Validar que el archivo sea un audio en formato .mp3 o .wav
-        $validated = $request->validate([
-            'audio' => 'required|file|mimes:mp3,wav|max:10240', // Máximo 10MB
-        ]);
+
 
         // Obtener el archivo de audio
         $audioFile = $request->file('audio');
@@ -43,10 +40,6 @@ class TextToSpeechApi extends Controller
 
     public function audioToText(Request $request)
     {
-        // Validar que el archivo sea un audio en formato .mp3 o .wav
-        $validated = $request->validate([
-            'audio' => 'required|file|mimes:mp3,wav|max:10240', // Máximo 10MB
-        ]);
 
         // Obtener el archivo de audio
         $audioFile = $request->file('audio');
@@ -69,6 +62,7 @@ class TextToSpeechApi extends Controller
 
     public function textToAudio(Request $request)
     {
+
 
         // Obtener el texto
         $text = $request->input('text');
