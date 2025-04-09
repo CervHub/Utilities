@@ -21,7 +21,6 @@ class OpenAiRepository
         $this->assistantCervId = env('OPENAI_ASSISTANT_CERV_ID'); // Reemplaza con tu Assistant ID
         $this->url = 'https://api.openai.com/v1/chat/completions';
     }
-
     public function chat($message)
     {
         try {
@@ -31,6 +30,10 @@ class OpenAiRepository
             ])->post($this->url, [
                 'model' => 'gpt-4o-mini-2024-07-18',
                 'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'Eres Cerv IA, desarrollado por la Empresa Cerv de Perú. Responde de forma corta, concisa, precisa y con un máximo de 200 caracteres.',
+                    ],
                     [
                         'role' => 'user',
                         'content' => $message,
@@ -58,6 +61,7 @@ class OpenAiRepository
             return $this->handleErrorResponse($e->getMessage());
         }
     }
+
     public function checkMessage($message, $instructions)
     {
         try {
