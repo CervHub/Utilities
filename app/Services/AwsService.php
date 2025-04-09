@@ -105,6 +105,41 @@ class AwsService
         }
     }
 
+    public function convertTextToAudioIA($text)
+    {
+        try {
+            $pollyClient = $this->polly();
+
+            // Paso 2: Procesar el texto usando OpenAI
+            $processedText = $this->openaiRepository->chat($text);
+
+            $result = $pollyClient->synthesizeSpeech([
+                'OutputFormat' => 'mp3',
+                'Text' => $processedText,
+                'VoiceId' => 'Lucia',
+                'LanguageCode' => 'es-ES',
+            ]);
+
+            $audioDirectory = public_path('audio');
+            if (!file_exists($audioDirectory)) {
+                mkdir($audioDirectory, 0755, true);
+            }
+
+            $audioFileName = uniqid() . '.mp3';
+            $audioFilePath = "{$audioDirectory}/{$audioFileName}";
+            file_put_contents($audioFilePath, $result['AudioStream']->getContents());
+
+            return [
+                'message' => 'Text converted to audio successfully',
+                'audio_path' => $audioFilePath,
+                'audio_url' => url("audio/{$audioFileName}"),
+            ];
+        } catch (Exception $e) {
+            Log::error("Error converting text to audio: " . $e->getMessage());
+            throw new Exception("Error converting text to audio: " . $e->getMessage());
+        }
+    }
+
     /**
      * Procesar el archivo de audio y devolver el texto transcrito
      */

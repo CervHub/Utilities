@@ -22,6 +22,9 @@ Route::post('text-to-speech/text-to-audio', [TextToSpeechApi::class, 'textToAudi
 // Ingresa un texto y retorna un texto
 Route::post('chat/text-to-text', [ChatController::class, 'textToText'])->name('chat.textToText');
 
+// Ingresa un texto se procesa con ChatGPT y retorna un audio
+Route::post('response/text-to-speech/text-to-audio', [ChatController::class, 'textToSpeech'])->name('response.textToSpeech');
+
 
 // Ruta de prueba que responde con un mensaje de bienvenida
 Route::get('test/welcome', function () {

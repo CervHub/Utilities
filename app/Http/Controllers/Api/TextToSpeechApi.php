@@ -114,4 +114,37 @@ class TextToSpeechApi extends Controller
             ], 500);
         }
     }
+
+    public function textToSpeech(Request $request)
+    {
+        // Validar que el texto esté presente
+        $validator = Validator::make($request->all(), [
+            'text' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Obtener el texto
+        $text = $request->input('text');
+
+        try {
+            // Delegar la lógica al servicio AWS
+            $response = $this->awsService->convertTextToAudioIA($text);
+
+            return response()->json([
+                'message' => 'Text converted to audio successfully',
+                'data' => $response,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error converting text to audio',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
