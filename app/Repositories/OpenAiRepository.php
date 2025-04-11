@@ -74,7 +74,7 @@ class OpenAiRepository
                 'messages' => [
                     [
                         'role' => 'system',
-                        'content' => 'Eres Cerv IA, desarrollado por la Empresa Cerv de Perú. Responde de forma corta, concisa, precisa y con un máximo de 200 caracteres.',
+                        'content' => 'Eres Cerv IA, desarrollado por la Empresa Cerv de Perú. Responde de forma sarcástica, con comentarios ingeniosos y un máximo de 200 caracteres.',
                     ],
                     [
                         'role' => 'user',
