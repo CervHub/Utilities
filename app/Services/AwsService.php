@@ -81,8 +81,8 @@ class AwsService
             $result = $pollyClient->synthesizeSpeech([
                 'OutputFormat' => 'mp3',
                 'Text' => $text,
-                'VoiceId' => 'Lucia',
-                'LanguageCode' => 'es-ES',
+                'VoiceId' => 'Pedro',
+                'LanguageCode' => 'es-US',
             ]);
 
             $audioDirectory = public_path('audio');
@@ -116,8 +116,8 @@ class AwsService
             $result = $pollyClient->synthesizeSpeech([
                 'OutputFormat' => 'mp3',
                 'Text' => $processedText,
-                'VoiceId' => 'Lucia',
-                'LanguageCode' => 'es-ES',
+                'VoiceId' => 'Miguel',
+                'LanguageCode' => 'es-US',
             ]);
 
             $audioDirectory = public_path('audio');
@@ -164,7 +164,7 @@ class AwsService
             $jobName = 'transcription_' . uniqid();
             $transcribeClient->startTranscriptionJob([
                 'TranscriptionJobName' => $jobName,
-                'LanguageCode' => 'es-ES',
+                'LanguageCode' => 'es-US',
                 'Media' => [
                     'MediaFileUri' => $mediaUri,
                 ],
@@ -215,8 +215,9 @@ class AwsService
             $result = $pollyClient->synthesizeSpeech([
                 'OutputFormat' => 'mp3',
                 'Text' => $processedText,
-                'VoiceId' => 'Lucia',
-                'LanguageCode' => 'es-ES',
+                'VoiceId' => 'Pedro',
+                'LanguageCode' => 'es-US',
+                'Engine' => 'generative',
             ]);
 
             // Paso 5: Guardar el nuevo archivo de audio
