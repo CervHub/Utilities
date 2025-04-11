@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Thread;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class OpenAiRepository
 {
@@ -21,6 +22,47 @@ class OpenAiRepository
         $this->assistantCervId = env('OPENAI_ASSISTANT_CERV_ID'); // Reemplaza con tu Assistant ID
         $this->url = 'https://api.openai.com/v1/chat/completions';
     }
+
+    public function transcribe($audioFile)
+    {
+        Log::info("message", ['audioFile' => $audioFile]);
+
+        // Validar que $audioFile sea una instancia de UploadedFile
+        if (!$audioFile instanceof \Illuminate\Http\UploadedFile) {
+            throw new \InvalidArgumentException('El archivo proporcionado no es válido.');
+        }
+
+        try {
+            // Enviar el archivo como multipart/form-data
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $this->apiKey,
+            ])->attach(
+                'file', // Nombre del campo esperado por la API
+                fopen($audioFile->getPathname(), 'r'), // Archivo en binario
+                $audioFile->getClientOriginalName() // Nombre original del archivo
+            )->post('https://api.openai.com/v1/audio/transcriptions', [
+                'model' => 'whisper-1', // Modelo de transcripción
+            ]);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+
+                // Retornar el texto transcrito
+                if (isset($responseData['text'])) {
+                    return $responseData['text'];
+                }
+
+                return 'No se pudo obtener la transcripción del audio.';
+            } else {
+                Log::error("Error en la API: " . $response->status() . " - " . $response->body());
+                return $this->handleErrorResponse($response->body());
+            }
+        } catch (\Exception $e) {
+            Log::error("Excepción: " . $e->getMessage());
+            return $this->handleErrorResponse($e->getMessage());
+        }
+    }
+
     public function chat($message)
     {
         try {

@@ -15,6 +15,25 @@ class OpenAiService
         $this->openAiRepository = $openAiRepository;
     }
 
+    public function transcribe(Request $request)
+    {
+        try {
+            // Validar que el request tenga el campo 'audio'
+            $request->validate([
+                'audio' => 'required|file|mimes:mp3,wav,ogg|max:20480', // 20MB
+            ]);
+
+            $audio = $request->file('audio');
+            $response = $this->openAiRepository->transcribe($audio);
+
+            // Devolver la respuesta en el campo 'message' con código de estado 200
+            return response()->json(['message' => $response], 200);
+        } catch (Exception $e) {
+            // Manejar la excepción y devolver una respuesta de error
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+    }
+
     public function chat(Request $request)
     {
         try {

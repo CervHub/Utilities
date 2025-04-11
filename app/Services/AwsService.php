@@ -198,20 +198,19 @@ class AwsService
             throw new Exception("Error processing audio file: " . $e->getMessage());
         }
     }
-    /**
-     * Procesar el archivo de audio, agregar "hola" al inicio y generar un nuevo archivo de audio.
-     */
+
     public function processAudioFile($audioFile)
     {
         try {
-            // Paso 1: Convertir el audio recibido a texto
-            $transcriptionResult = $this->convertAudioToText($audioFile);
-            $originalText = $transcriptionResult['text'];
 
-            // Paso 2: Procesar el texto usando OpenAI
+            // Paso 2: Enviar la URL pública del audio al repositorio OpenAI para transcribir
+            $transcriptionResult = $this->openaiRepository->transcribe($audioFile);
+            $originalText = $transcriptionResult;
+
+            // Paso 3: Procesar el texto usando OpenAI
             $processedText = $this->openaiRepository->chat($originalText);
 
-            // Paso 3: Convertir el texto procesado a audio usando Amazon Polly
+            // Paso 4: Convertir el texto procesado a audio usando Amazon Polly
             $pollyClient = $this->polly();
             $result = $pollyClient->synthesizeSpeech([
                 'OutputFormat' => 'mp3',
@@ -220,7 +219,7 @@ class AwsService
                 'LanguageCode' => 'es-ES',
             ]);
 
-            // Paso 4: Guardar el nuevo archivo de audio
+            // Paso 5: Guardar el nuevo archivo de audio
             $audioDirectory = public_path('audio');
             if (!file_exists($audioDirectory)) {
                 mkdir($audioDirectory, 0755, true);
