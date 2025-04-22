@@ -70,7 +70,7 @@ class OpenAiRepository
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
             ])->post($this->url, [
-                'model' => 'gpt-4o-mini-2024-07-18',
+                'model' => 'gpt-4.1-2025-04-14',
                 'messages' => [
                     [
                         'role' => 'system',
